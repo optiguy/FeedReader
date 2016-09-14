@@ -65,7 +65,7 @@ namespace FeedReader
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public string GetChannelInfo(string feedLink)
+        public void GetChannelInfo(string feedLink)
         {
             XmlDocument doc = ParseRSSasXML(feedLink);
             XmlNode channelNode = doc.DocumentElement.SelectSingleNode("channel");
@@ -75,12 +75,12 @@ namespace FeedReader
             channel.link = channelNode["link"].InnerText;
             channel.description = channelNode["description"].InnerText;
 
-            return JsonConvert.SerializeObject(channel);
+            Context.Response.Write(JsonConvert.SerializeObject(channel));
         }
 
         [WebMethod]
-        [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public string GetItems(string feedLink)
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public void GetItems(string feedLink)
         {
             XmlDocument doc = ParseRSSasXML(feedLink);
 
@@ -101,7 +101,7 @@ namespace FeedReader
                 items.Add(item);
             }
 
-            return JsonConvert.SerializeObject(items);
+            Context.Response.Write(JsonConvert.SerializeObject(items));
         }
 
         private static XmlDocument ParseRSSasXML(string feedLink)

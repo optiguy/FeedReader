@@ -25,6 +25,7 @@
                     <div class="divider"></div>
                 </div>
                 <div id="feedResult" class="col s12 center">
+                    <!-- Loading Placeholder -->
                     <div class="preloader-wrapper big active">
                         <div class="spinner-layer spinner-blue-only">
                             <div class="circle-clipper left">
@@ -39,6 +40,7 @@
                         </div>
                     </div>
                     <h5 class="valign">Vent venligst mens dine nyheder loades ind...</h5>
+                    <!-- Loading Placeholder -->
                 </div>
                 </div>
             </div>
@@ -49,19 +51,50 @@
         <script type="text/javascript" src="public/materialize/js/materialize.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
+
                 $.ajax({
                     method: "GET",
                     url: "http://localhost:6942/WebServiceFeeds.asmx/GetFeeds",
                 })
-                .done(function (data) {                    
+                .done(function (data) {
+
+                    $("#feedResult").html("");
+
                     $.each(JSON.parse(data), function (index, feed) {
-                        console.log(feed.title);
-                        console.log(feed.link);
+                        let HTMLTitle = "<h2>" + feed.title + "</h2>";
+                        let HTMLRSSlink = "<div class='chip'><a href='" + feed.link + "'>RSS adresse til " + feed.title + "</a></div>";
+                        
+                        $("#feedResult").append(HTMLTitle + HTMLRSSlink);
+
+                        $.ajax({
+                            method: "POST",
+                            async: false,
+                            data: { feedLink: feed.link },
+                            url: "http://localhost:6942/WebServiceFeeds.asmx/GetItems",
+                        })
+                        .done(function (items) {
+                            $.each(JSON.parse(items), function (index, item) {
+
+                                let HTMLItemTitle = "<a href='" + item.link + "'><h5>" + item.title + "</h5></a>";
+                                let HTMLItemDescription = "<p>" + item.description + "</p>";
+                                let HTMLItemAuthor = "<p>Forfatter: " + item.author + "<p>";
+                                let HTMLItemLink = "<a href='" + item.link + "'>Læs Nyheden</a>";
+
+                                let fullHTML = "<div class='card-panel hoverable'><div class='section'>" + HTMLItemTitle + HTMLItemDescription + HTMLItemAuthor + HTMLItemLink + "</div></div>";
+                                $("#feedResult").append(fullHTML);
+                            });
+                        })
+                        .error(function () {
+                            alert("Feed kan ikke hentes!");
+                        })
+
                     });
+
                 })
                 .error(function () {
                     alert("Something went wrong. Please reload the page!");
                 });
+
             });
         </script>
     </form>
