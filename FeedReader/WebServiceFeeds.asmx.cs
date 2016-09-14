@@ -33,6 +33,7 @@ namespace FeedReader
     /// Summary description for WebServiceFeeds
     /// </summary>
     [WebService(Namespace = "http://localhost.bjarke/")]
+    [ScriptService]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
@@ -43,7 +44,7 @@ namespace FeedReader
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = true, ResponseFormat = ResponseFormat.Json)]
-        public string GetFeeds()
+        public void GetFeeds()
         {
             //Query the database
             SqlDataAdapter DBfeeds = new SqlDataAdapter("SELECT * FROM Feeds", conn);
@@ -59,8 +60,7 @@ namespace FeedReader
                 feed.link = feedRow["link"].ToString();
                 model.Add(feed);
             }
-
-            return JsonConvert.SerializeObject(model);
+            Context.Response.Write(JsonConvert.SerializeObject(model));
         }
 
         [WebMethod]
