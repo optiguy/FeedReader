@@ -34,7 +34,7 @@
                                 <asp:HyperLink ID="Linkbutton_feed" runat="server" NavigateUrl='<%# Eval("link") %>'><%# "RSS adresse til " + Eval("title") %></asp:HyperLink>
                             </div>
                             <asp:Repeater ID="Repeater_channel" OnItemDataBound="Repeater_channel_ItemDataBound" runat="server">
-                                <ItemTemplate> 
+                                <ItemTemplate>
                                     <!-- Channel 
                                     <a href="<%# XPath("link")%>" title="<%# "Gå til kategorien " + XPath("title")%>">
                                         <h3><%# XPath("title")%></h3>

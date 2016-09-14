@@ -92,6 +92,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Ajax.aspx" />
     <Content Include="App_Data\DatabaseFeeds.mdf" />
     <Content Include="App_Data\DatabaseFeeds_log.ldf">
       <DependentUpon>DatabaseFeeds.mdf</DependentUpon>
@@ -105,6 +106,13 @@
     <Content Include="WebServiceFeeds.asmx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ajax.aspx.cs">
+      <DependentUpon>Ajax.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Ajax.aspx.designer.cs">
+      <DependentUpon>Ajax.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
